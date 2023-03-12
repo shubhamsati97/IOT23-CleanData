@@ -23,7 +23,7 @@ def convert_hyphens_to_zero(data, fields):
 def data_cleanup():
     # All files  in the path
     import pathlib
-    iot_23 = pathlib.Path("E:/workspace/university/Independent Study/opt/")
+    iot_23 = pathlib.Path("/home/mohit/dataset/data/opt/")
     files = list(iot_23.rglob("*.labeled"))
     files = [str(file) for file in files]
     print(files)
