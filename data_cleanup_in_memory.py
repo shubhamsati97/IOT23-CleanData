@@ -46,7 +46,6 @@ def data_cleanup():
         print("total_row_count:" + str(total_row_count))
         print("benign_row_count:" + str(benign_row_count)+  " and ratio: " + str(benign_row_count/total_row_count))
         print("malicious_row_count:" + str(malicious_row_count) +  " and ratio: " + str(malicious_row_count/total_row_count))
-        sys.stdout.flush()
         n_rows = int(len(df) * 0.05)
         final_df = pd.DataFrame(columns=df.columns)
 
@@ -59,7 +58,6 @@ def data_cleanup():
             print("row count for label: " + label + " is " + str(len(label_specific_df))  + " -> " + str(row_count))
             label_specific_sample = label_specific_df.sample(n=row_count)
             final_df = pd.concat([final_df, label_specific_sample])     
-        sys.stdout.flush()
         print("--------------- MINIFIED INDIVIDUAL FILE -------------------------")
         total_row_count = len(final_df.index)
         benign_row_count = final_df['label'].value_counts()['Benign']
@@ -82,6 +80,6 @@ if __name__ == '__main__':
     import pandas as pd
     consolidated_df = pd.DataFrame()
     for i in range(24):
-        df = pd.read_csv('dataset' + str(count) + '.csv')
+        df = pd.read_csv('dataset' + str(i) + '.csv')
         consolidated_df = pd.concat([consolidated_df, df])
-    consolidated_df.to_csv(f"consolidated.csv")
+    consolidated_df.to_csv(f"consolidated.csv", mode='w', index=False, header=True)
