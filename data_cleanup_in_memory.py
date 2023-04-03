@@ -15,6 +15,7 @@ def data_cleanup():
     import pandas as pd
     consolidated_minified_df = pd.DataFrame()
     initial_skip_rows = 8
+    count = 0
     for file_name in files:
         print("-------------xxxxxxxx--------------")
         print("started processing file: " + str(file_name))
@@ -67,12 +68,8 @@ def data_cleanup():
         print("malicious_row_count:" + str(malicious_row_count) +  " and ratio: " + str(malicious_row_count/total_row_count))
         print("-------------xxxxxxxx--------------")
 
-        if len(consolidated_minified_df) == 0:
-            consolidated_minified_df = pd.DataFrame(columns=df.columns)
-        consolidated_minified_df = pd.concat([consolidated_minified_df, final_df])
-    consolidated_minified_df.sort_values(by='ts')
-    consolidated_minified_df.to_csv('minified_dataset.csv', mode='w', index=False, header=True)
-        
+        final_df.to_csv('dataset' + str(count) + '.csv', mode='w', index=False, header=True)
+        count += 1
 
 if __name__ == '__main__':
     data_cleanup()
