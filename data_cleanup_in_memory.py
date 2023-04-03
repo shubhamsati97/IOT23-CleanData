@@ -16,7 +16,7 @@ def data_cleanup():
     consolidated_minified_df = pd.DataFrame()
     initial_skip_rows = 8
     count = 0
-    for file_name in files:
+    for file_name in files[:2]:
         print("-------------xxxxxxxx--------------")
         print("started processing file: " + str(file_name))
         sys.stdout.flush()
@@ -72,6 +72,16 @@ def data_cleanup():
         final_df.to_csv('dataset' + str(count) + '.csv', mode='w', index=False, header=True)
         count += 1
         sys.stdout.flush()
-        
+
 if __name__ == '__main__':
     data_cleanup()
+
+    import time
+    time.sleep(60)
+
+    import pandas as pd
+    consolidated_df = pd.DataFrame()
+    for i in range(24):
+        df = pd.read_csv('dataset' + str(count) + '.csv')
+        consolidated_df = pd.concat([consolidated_df, df])
+    consolidated_df.to_csv(f"consolidated.csv")
