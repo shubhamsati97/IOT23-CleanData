@@ -12,14 +12,14 @@ def data_cleanup():
     files = [str(file) for file in files]
     print("\n\n" + str(files) + "\n\n")
     
-    consolidated_minified_df = None
+    import pandas as pd
+    consolidated_minified_df = pd.DataFrame()
     initial_skip_rows = 8
-    for file_name in files[:1]:
+    for file_name in files:
         print("-------------xxxxxxxx--------------")
         print("started processing file: " + str(file_name))
         # Loading the dataset
-        import pandas as pd
-        df = pd.read_table(filepath_or_buffer=file_name, skiprows=initial_skip_rows)
+        df = pd.read_table(filepath_or_buffer=file_name, skiprows=initial_skip_rows, low_memory=False)
 
         df.columns=['ts','uid','id.orig_h','id.orig_p','id.resp_h','id.resp_p','proto','service','duration','orig_bytes','resp_bytes','conn_state','local_orig','local_resp','missed_bytes','history','orig_pkts','orig_ip_bytes','resp_pkts','resp_ip_bytes','label']
 
@@ -45,7 +45,6 @@ def data_cleanup():
         print("benign_row_count:" + str(benign_row_count)+  " and ratio: " + str(benign_row_count/total_row_count))
         print("malicious_row_count:" + str(malicious_row_count) +  " and ratio: " + str(malicious_row_count/total_row_count))
 
-        df.sort_values(by="ts")
         n_rows = int(len(df) * 0.05)
         final_df = pd.DataFrame(columns=df.columns)
 
@@ -68,7 +67,7 @@ def data_cleanup():
         print("malicious_row_count:" + str(malicious_row_count) +  " and ratio: " + str(malicious_row_count/total_row_count))
         print("-------------xxxxxxxx--------------")
 
-        if not consolidated_minified_df:
+        if len(consolidated_minified_df) == 0:
             consolidated_minified_df = pd.DataFrame(columns=df.columns)
         consolidated_minified_df = pd.concat([consolidated_minified_df, final_df])
     consolidated_minified_df.sort_values(by='ts')
