@@ -68,7 +68,7 @@ def data_cleanup():
         print("malicious_row_count:" + str(malicious_row_count) +  " and ratio: " + str(malicious_row_count/total_row_count))
         print("-------------xxxxxxxx--------------")
 
-        final_df.to_csv('dataset' + str(count) + '.csv', mode='w', index=False, header=True)
+        final_df.to_csv('minified_datasets/dataset' + str(count) + '.csv', mode='w', index=False, header=True)
         count += 1
 
 if __name__ == '__main__':
