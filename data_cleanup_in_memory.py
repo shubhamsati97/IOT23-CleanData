@@ -16,7 +16,7 @@ def data_cleanup():
     consolidated_minified_df = pd.DataFrame()
     initial_skip_rows = 8
     count = 0
-    for file_name in files[:2]:
+    for file_name in files:
         print("-------------xxxxxxxx--------------")
         print("started processing file: " + str(file_name))
         sys.stdout.flush()
