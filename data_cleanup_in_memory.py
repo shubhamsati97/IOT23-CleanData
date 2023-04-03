@@ -6,7 +6,7 @@ def process_last_column(df):
 
 def data_cleanup():
     # All files  in the path
-    import pathlib
+    import pathlib, sys
     iot_23 = pathlib.Path("/home/mohit/opt/")
     files = list(iot_23.rglob("*.labeled"))
     files = [str(file) for file in files]
@@ -19,6 +19,7 @@ def data_cleanup():
     for file_name in files:
         print("-------------xxxxxxxx--------------")
         print("started processing file: " + str(file_name))
+        sys.stdout.flush()
         # Loading the dataset
         df = pd.read_table(filepath_or_buffer=file_name, skiprows=initial_skip_rows, low_memory=False)
 
@@ -45,7 +46,7 @@ def data_cleanup():
         print("total_row_count:" + str(total_row_count))
         print("benign_row_count:" + str(benign_row_count)+  " and ratio: " + str(benign_row_count/total_row_count))
         print("malicious_row_count:" + str(malicious_row_count) +  " and ratio: " + str(malicious_row_count/total_row_count))
-
+        sys.stdout.flush()
         n_rows = int(len(df) * 0.05)
         final_df = pd.DataFrame(columns=df.columns)
 
@@ -58,7 +59,7 @@ def data_cleanup():
             print("row count for label: " + label + " is " + str(len(label_specific_df))  + " -> " + str(row_count))
             label_specific_sample = label_specific_df.sample(n=row_count)
             final_df = pd.concat([final_df, label_specific_sample])     
-
+        sys.stdout.flush()
         print("--------------- MINIFIED INDIVIDUAL FILE -------------------------")
         total_row_count = len(final_df.index)
         benign_row_count = final_df['label'].value_counts()['Benign']
@@ -68,8 +69,9 @@ def data_cleanup():
         print("malicious_row_count:" + str(malicious_row_count) +  " and ratio: " + str(malicious_row_count/total_row_count))
         print("-------------xxxxxxxx--------------")
 
-        final_df.to_csv('minified_datasets/dataset' + str(count) + '.csv', mode='w', index=False, header=True)
+        final_df.to_csv('dataset' + str(count) + '.csv', mode='w', index=False, header=True)
         count += 1
-
+        sys.stdout.flush()
+        
 if __name__ == '__main__':
     data_cleanup()
